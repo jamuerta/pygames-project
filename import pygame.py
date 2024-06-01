@@ -25,7 +25,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2) # cambiar posición inicial
         self.vel = 5
-        self.vely = 0
+        
 
     def update(self):
         keys = pygame.key.get_pressed()
