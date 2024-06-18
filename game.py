@@ -74,10 +74,14 @@ def main(ventana):
     jugador = Player(100, 100, 50, 50)
     fire = Fuego(100, HEIGHT - block_size - 64, 16, 32)
     fire.on()
-    floor = [Bloque(i * block_size, HEIGHT - block_size, block_size)
+    floor = [Bloque(i * block_size, HEIGHT - block_size, block_size, 272,64)
              for i in range(-WIDTH // block_size, (WIDTH * 2) // block_size)]
-    objetos = [*floor, Bloque(0, HEIGHT - block_size * 2, block_size),
-               Bloque(block_size * 3, HEIGHT - block_size * 4, block_size), fire]
+    objetos = [*floor, Bloque(0, HEIGHT - block_size * 2, block_size, 272, 64),
+               Bloque(block_size * 3, HEIGHT - block_size * 4, block_size, 272, 64), 
+               Bloque(block_size * 4, HEIGHT - block_size * 4, block_size, 272, 64), 
+               Bloque(block_size * 8, HEIGHT - block_size * 3, block_size, 272, 64),
+               Bloque(block_size * 9, HEIGHT - block_size * 3, block_size, 272, 64),
+               Bloque(block_size * 10, HEIGHT - block_size * 3, block_size, 272, 64), fire]
 
     offset_x = 0
     scroll_areaw = 200

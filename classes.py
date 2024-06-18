@@ -111,9 +111,9 @@ class Objeto(pygame.sprite.Sprite):
         win.blit(self.image, (self.rect.x - offset_x, self.rect.y))
 
 class Bloque(Objeto):
-    def __init__(self, x, y, size):
+    def __init__(self, x, y, size, x_sheet, y_sheet):
         super().__init__(x, y, size, size)
-        bloque = get_block(size)
+        bloque = get_block(size, x_sheet, y_sheet)
         self.image.blit(bloque, (0,0))
         self.mask = pygame.mask.from_surface(self.image)
 
