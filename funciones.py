@@ -57,3 +57,27 @@ def get_block(size, x, y):
     surface.blit(imagen, (0,0), pygame.Rect(x_pos, y_pos, size, size))
     
     return pygame.transform.scale2x(surface)
+
+def health_bar(ventana, health, max_health, x, y):
+    heart_full = pygame.image.load('assets/health bar/full.png')
+    heart_half = pygame.image.load('assets/health bar/half.png')
+    heart_empty = pygame.image.load('assets/health bar/empty.png')
+    
+    full_hearts = health // 20
+    half_hearts = (health % 20) // 10
+    empty_hearts = (max_health // 20) - full_hearts - half_hearts
+
+   
+    for i in range(full_hearts):
+        ventana.blit(heart_full, (x + i * heart_full.get_width(), y))
+    
+    for i in range(half_hearts):
+        ventana.blit(heart_half, (x + (full_hearts + i) * heart_full.get_width(), y))
+    
+    for i in range(empty_hearts):
+        ventana.blit(heart_empty, (x + (full_hearts + half_hearts + i) * heart_full.get_width(), y))
+
+def game_over(ventana, message, x, y):
+    font = pygame.font.SysFont('Comic Sans MS', 20)
+    text = font.render(message, True, (0,0,0))
+    ventana.blit(text, (x, y))

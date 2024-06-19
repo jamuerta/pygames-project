@@ -1,7 +1,7 @@
 import pygame
 from os.path import join
 from classes import *
-from funciones import background
+from funciones import background, health_bar, game_over
 
 pygame.init()
 
@@ -63,7 +63,7 @@ def mover(player, objetos):
     to_check = [colision_izq, colision_der, *vertical_collide]
     for obj in to_check:
         if obj and obj.name == "fire":
-            player.daño()
+            player.daño(5)
 
 def main(ventana):
     clock = pygame.time.Clock()
@@ -72,6 +72,7 @@ def main(ventana):
     block_size = 96
 
     jugador = Player(100, 100, 50, 50)
+    jugador.max_health = 100
     fire = Fuego(100, HEIGHT - block_size - 64, 16, 32)
     fire.on()
     floor = [Bloque(i * block_size, HEIGHT - block_size, block_size, 272,64)
@@ -98,15 +99,27 @@ def main(ventana):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP and jugador.jump_count < 2:
                     jugador.saltar()
-    
-        jugador.loop(60)
-        fire.loop()
-        mover(jugador, objetos)
-        draw(ventana, fondo, fondo_im, jugador, objetos, offset_x)
 
-        if ((jugador.rect.right - offset_x >= WIDTH - scroll_areaw) and jugador.x_vel > 0) or (
+                if event.key == pygame.K_r and jugador.dead:
+                    main(ventana)
+
+                if event.key == pygame.K_q and jugador.dead:
+                    run = False
+    
+        if not jugador.dead:
+            jugador.loop(60)
+            fire.loop()
+            mover(jugador, objetos)
+            draw(ventana, fondo, fondo_im, jugador, objetos, offset_x)
+
+            if ((jugador.rect.right - offset_x >= WIDTH - scroll_areaw) and jugador.x_vel > 0) or (
                 (jugador.rect.left - offset_x <= scroll_areaw) and jugador.x_vel < 0):
-            offset_x += jugador.x_vel
+                offset_x += jugador.x_vel
+            
+            health_bar(ventana, jugador.health, jugador.max_health, 10, 10)  # Ajustar la posición según sea necesario
+        else: 
+            game_over(ventana, "Game Over - Press R to Restart or Q to Quit", WIDTH // 2 - 250, HEIGHT // 2 - 50)
+        pygame.display.flip()
 
     pygame.quit()
     quit()

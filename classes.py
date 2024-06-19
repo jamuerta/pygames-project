@@ -19,6 +19,8 @@ class Player(pygame.sprite.Sprite):
         self.jump_count = 0
         self.hit = False
         self.hit_count = 0
+        self.health = 100
+        self.dead = False
         if self.sprites is None:
             self.sprites = load_spritesheets("sprites", 32, 32, True )
 
@@ -33,8 +35,16 @@ class Player(pygame.sprite.Sprite):
         self.rect.x += dx
         self.rect.y += dy
 
-    def daño(self):
+    def daño(self, amount):
         self.hit = True
+        self.health -= amount
+        if self.health <= 0:
+            self.health = 0
+        if self.health == 0:
+            self.muerte()
+
+    def muerte(self):
+        self.dead = True
 
     def izquierda(self, vel):
         self.x_vel = -vel
