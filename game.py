@@ -1,7 +1,6 @@
 import pygame
-from os.path import join
 from classes import *
-from funciones import background, health_bar, game_over
+from funciones import health_bar, game_over
 
 pygame.init()
 
@@ -68,7 +67,7 @@ def main(ventana):
     jugador = Player(100, 100, 50, 50)
     jugador.max_health = 100
     jugador.health = jugador.max_health
-    fire.on()
+    
 
     level1 = Level(jugador, "Gray.png")
     level2 = Level(jugador, "Yellow.png")
@@ -86,6 +85,9 @@ def main(ventana):
     run = True
     while run:
         clock.tick(60)
+        fire_1.on()
+        fire_2.on()
+        fire_3.on()
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -113,14 +115,16 @@ def main(ventana):
                 elif current_level == level4:
                     current_level = level5
 
-                jugador.rect.left = 0  # Posición inicial en x del nuevo nivel
+                jugador.rect.left = 0  
                 jugador.rect.y = 100
 
             jugador.loop(60)
-            fire.loop()
-            mover(jugador, objetos_n1)  # Lógica de movimiento y colisiones del jugador en el nivel actual
-            current_level.upd()  # Actualiza plataformas y trampas del nivel actual
-            current_level.draw(ventana, offset_x)  # Dibuja el nivel actual (fondo, plataformas, trampas, etc.)
+            fire_1.loop()
+            fire_2.loop()
+            fire_3.loop()
+            mover(jugador, objetos_n1)  
+            current_level.upd() 
+            current_level.draw(ventana, offset_x)  
             jugador.draw(ventana, offset_x)
 
             if ((jugador.rect.right - offset_x >= WIDTH - scroll_areaw) and jugador.x_vel > 0) or (
@@ -136,15 +140,17 @@ def main(ventana):
     pygame.quit()
     quit()
 
-fire = Fuego(770, 250, 16, 32)
-floor = [Bloque(i * block_size, HEIGHT - block_size, block_size, 272,64)
+fire_1 = Fuego(770, 250, 16, 32)
+fire_2= Fuego(100, HEIGHT - block_size - 64, 16, 32)
+fire_3= Fuego(1100, 440, 16, 32)
+floor_1 = [Bloque(i * block_size, HEIGHT - block_size, block_size, 272,64)
              for i in range(0, 2000)]
-objetos_n1 = [*floor, Bloque(0, HEIGHT - block_size * 2, block_size, 272, 64),
+objetos_n1 = [*floor_1, Bloque(0, HEIGHT - block_size * 2, block_size, 272, 64),
                Bloque(block_size * 3, HEIGHT - block_size * 4, block_size, 272, 64), 
                Bloque(block_size * 4, HEIGHT - block_size * 4, block_size, 272, 64), 
                Bloque(block_size * 8, HEIGHT - block_size * 3, block_size, 272, 64),
                Bloque(block_size * 9, HEIGHT - block_size * 3, block_size, 272, 64),
-               Bloque(block_size * 10, HEIGHT - block_size * 3, block_size, 272, 64), fire]
+               Bloque(block_size * 10, HEIGHT - block_size * 3, block_size, 272, 64), fire_1, fire_2, fire_3]
 
 if __name__ == "__main__":
     main(ventana)
