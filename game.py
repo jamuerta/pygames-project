@@ -7,18 +7,9 @@ pygame.init()
 
 WIDTH, HEIGHT = 800, 600
 vel = 5
+block_size = 96
 
 ventana = pygame.display.set_mode((WIDTH, HEIGHT))
-
-def draw(win, fondo, fondo_i, player, objetos, offset_x):
-    for tile in fondo:
-        ventana.blit(fondo_i, tile)
-
-    for obj in objetos:
-        obj.draw(win, offset_x)
-    
-    player.draw(win, offset_x)
-    pygame.display.update()
 
 def colision_ver(player, objetos, dy):
     obj_chocados = []
@@ -59,6 +50,9 @@ def mover(player, objetos):
     if teclas[pygame.K_RIGHT] and not colision_der:
         player.derecha(vel)
 
+    if player.rect.left + player.x_vel < 0:
+        player.rect.left = 0
+
     vertical_collide = colision_ver(player, objetos, player.y_vel)
     to_check = [colision_izq, colision_der, *vertical_collide]
     for obj in to_check:
@@ -67,22 +61,24 @@ def mover(player, objetos):
 
 def main(ventana):
     clock = pygame.time.Clock()
-    fondo, fondo_im = background("Gray.png")
+    #fondo, fondo_im = background("Gray.png")
 
-    block_size = 96
+    #block_size = 96
 
     jugador = Player(100, 100, 50, 50)
     jugador.max_health = 100
-    fire = Fuego(100, HEIGHT - block_size - 64, 16, 32)
+    jugador.health = jugador.max_health
     fire.on()
-    floor = [Bloque(i * block_size, HEIGHT - block_size, block_size, 272,64)
-             for i in range(-WIDTH // block_size, (WIDTH * 2) // block_size)]
-    objetos = [*floor, Bloque(0, HEIGHT - block_size * 2, block_size, 272, 64),
-               Bloque(block_size * 3, HEIGHT - block_size * 4, block_size, 272, 64), 
-               Bloque(block_size * 4, HEIGHT - block_size * 4, block_size, 272, 64), 
-               Bloque(block_size * 8, HEIGHT - block_size * 3, block_size, 272, 64),
-               Bloque(block_size * 9, HEIGHT - block_size * 3, block_size, 272, 64),
-               Bloque(block_size * 10, HEIGHT - block_size * 3, block_size, 272, 64), fire]
+
+    level1 = Level(jugador, "Gray.png")
+    level2 = Level(jugador, "Yellow.png")
+    level3 = Level(jugador, "Blue.png")
+    level4 = Level(jugador, "Brown.png")
+    level5 = Level(jugador, "Purple.png")
+
+    current_level = level1
+
+    level1.load_game_data(objetos_n1)
 
     offset_x = 0
     scroll_areaw = 200
@@ -107,22 +103,48 @@ def main(ventana):
                     run = False
     
         if not jugador.dead:
+            if jugador.rect.right >= 2000:
+                if current_level == level1:
+                    current_level = level2
+                elif current_level == level2:
+                    current_level = level3
+                elif current_level == level3:
+                    current_level = level4
+                elif current_level == level4:
+                    current_level = level5
+
+                jugador.rect.left = 0  # Posición inicial en x del nuevo nivel
+                jugador.rect.y = 100
+
             jugador.loop(60)
             fire.loop()
-            mover(jugador, objetos)
-            draw(ventana, fondo, fondo_im, jugador, objetos, offset_x)
+            mover(jugador, objetos_n1)  # Lógica de movimiento y colisiones del jugador en el nivel actual
+            current_level.upd()  # Actualiza plataformas y trampas del nivel actual
+            current_level.draw(ventana, offset_x)  # Dibuja el nivel actual (fondo, plataformas, trampas, etc.)
+            jugador.draw(ventana, offset_x)
 
             if ((jugador.rect.right - offset_x >= WIDTH - scroll_areaw) and jugador.x_vel > 0) or (
-                (jugador.rect.left - offset_x <= scroll_areaw) and jugador.x_vel < 0):
+                (jugador.rect.left - offset_x <= 0) and jugador.x_vel < 0):
                 offset_x += jugador.x_vel
             
             health_bar(ventana, jugador.health, jugador.max_health, 10, 10)  # Ajustar la posición según sea necesario
         else: 
             game_over(ventana, "Game Over - Press R to Restart or Q to Quit", WIDTH // 2 - 250, HEIGHT // 2 - 50)
+        
         pygame.display.flip()
 
     pygame.quit()
     quit()
+
+fire = Fuego(770, 250, 16, 32)
+floor = [Bloque(i * block_size, HEIGHT - block_size, block_size, 272,64)
+             for i in range(0, 2000)]
+objetos_n1 = [*floor, Bloque(0, HEIGHT - block_size * 2, block_size, 272, 64),
+               Bloque(block_size * 3, HEIGHT - block_size * 4, block_size, 272, 64), 
+               Bloque(block_size * 4, HEIGHT - block_size * 4, block_size, 272, 64), 
+               Bloque(block_size * 8, HEIGHT - block_size * 3, block_size, 272, 64),
+               Bloque(block_size * 9, HEIGHT - block_size * 3, block_size, 272, 64),
+               Bloque(block_size * 10, HEIGHT - block_size * 3, block_size, 272, 64), fire]
 
 if __name__ == "__main__":
     main(ventana)

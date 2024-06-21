@@ -1,6 +1,6 @@
 import pygame
 
-from funciones import load_spritesheets, get_block
+from funciones import load_spritesheets, get_block, background
 
 class Player(pygame.sprite.Sprite):
     gravedad = 1
@@ -154,3 +154,34 @@ class Fuego(Objeto):
 
         if (self.ani_count // self.delay) > len(sprites):
             self.ani_count = 0
+
+class Level():
+    def __init__(self, player, bg_im):
+        self.player = player
+        self.platforms = pygame.sprite.Group()
+        self.traps = pygame.sprite.Group()
+        self.fondo, self.fondo_im = background(bg_im)
+
+    def draw(self, win, offset_x):
+        for tile in self.fondo:
+            win.blit(self.fondo_im, tile)
+
+        for obj in self.platforms:
+            obj.draw(win, offset_x)
+            
+        for obj in self.traps:
+            obj.draw(win, offset_x)
+    
+        self.player.draw(win, offset_x)
+        pygame.display.update()
+
+    def upd(self):
+        self.platforms.update()
+        self.traps.update()
+
+    def load_game_data(self, objetos):
+        for obj in objetos:
+            if isinstance(obj, Bloque):
+                self.platforms.add(obj)
+            elif isinstance(obj, Fuego):
+                self.traps.add(obj)
