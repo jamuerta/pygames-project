@@ -164,7 +164,8 @@ class Spikes(Objeto):
 
         #self.spikes = self.spikes["Idle"]
         self.image.blit(self.spike, (0,0))
-        self.mask = pygame.mask.from_surface(self.image)
+        #self.mask = pygame.mask.from_surface(self.image)
+        self.spike = pygame.transform.scale2x(self.image)
 
 class Spiked_Ball(Objeto):
     def __init__(self, x, y ,width, height):
