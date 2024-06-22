@@ -55,7 +55,14 @@ def mover(player, objetos):
     vertical_collide = colision_ver(player, objetos, player.y_vel)
     to_check = [colision_izq, colision_der, *vertical_collide]
     for obj in to_check:
+        if isinstance(obj, Fruits):
+            obj.apply_effect(player)
+            obj.collect()
         if obj and obj.name == "fire":
+            player.daño(5)
+        elif obj and obj.name == "spikes":
+            player.daño(5)
+        elif obj and obj.name == "spiked ball":
             player.daño(5)
 
 def main(ventana):
@@ -77,7 +84,11 @@ def main(ventana):
 
     current_level = level1
 
-    level1.load_game_data(objetos_n1)
+    level1.load_game_data(objetos_nivel1)
+    level2.load_game_data(objetos_nivel2)
+    level3.load_game_data(objetos_nivel3)
+    level4.load_game_data(objetos_nivel4)
+    level5.load_game_data(objetos_nivel5)
 
     offset_x = 0
     scroll_areaw = 200
@@ -85,9 +96,10 @@ def main(ventana):
     run = True
     while run:
         clock.tick(60)
-        fire_1.on()
-        fire_2.on()
-        fire_3.on()
+        n1_fruit1.loop()
+        #fire_1.on()
+        #fire_2.on()
+        #fire_3.on()
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -117,12 +129,13 @@ def main(ventana):
 
                 jugador.rect.left = 0  
                 jugador.rect.y = 100
+                offset_x = 0
 
             jugador.loop(60)
-            fire_1.loop()
-            fire_2.loop()
-            fire_3.loop()
-            mover(jugador, objetos_n1)  
+            #fire_1.loop()
+            #fire_2.loop()
+            #fire_3.loop()
+            mover(jugador, current_level.objetos)  
             current_level.upd() 
             current_level.draw(ventana, offset_x)  
             jugador.draw(ventana, offset_x)
@@ -140,17 +153,88 @@ def main(ventana):
     pygame.quit()
     quit()
 
-fire_1 = Fuego(770, 250, 16, 32)
-fire_2= Fuego(100, HEIGHT - block_size - 64, 16, 32)
-fire_3= Fuego(1100, 440, 16, 32)
+##############################################################
+
+#n1_fire1 = Fuego(770, 250, 16, 32)
+n1_fire2 = Fuego(100, HEIGHT - block_size - 64, 16, 32)
+n1_spikes1 = Spikes(1100, 487, 28, 28)
+n1_spikes1 = Spikes(1120, 487, 28, 28)
+n1_fruit1 = speed_fruit(770, 250, 32, 32, "Cherries")
 floor_1 = [Bloque(i * block_size, HEIGHT - block_size, block_size, 272,64)
              for i in range(0, 2000)]
-objetos_n1 = [*floor_1, Bloque(0, HEIGHT - block_size * 2, block_size, 272, 64),
+objetos_nivel1 = [*floor_1, Bloque(0, HEIGHT - block_size * 2, block_size, 272, 64),
                Bloque(block_size * 3, HEIGHT - block_size * 4, block_size, 272, 64), 
                Bloque(block_size * 4, HEIGHT - block_size * 4, block_size, 272, 64), 
                Bloque(block_size * 8, HEIGHT - block_size * 3, block_size, 272, 64),
                Bloque(block_size * 9, HEIGHT - block_size * 3, block_size, 272, 64),
-               Bloque(block_size * 10, HEIGHT - block_size * 3, block_size, 272, 64), fire_1, fire_2, fire_3]
+               Bloque(block_size * 10, HEIGHT - block_size * 3, block_size, 272, 64),
+               Bloque(block_size * 13, HEIGHT - block_size * 4, block_size, 272, 64),
+                Bloque(block_size * 14, HEIGHT - block_size * 5, block_size, 272, 64),
+                 Bloque(block_size * 15, HEIGHT - block_size * 5, block_size, 272, 64),
+                  Bloque(block_size * 16, HEIGHT - block_size * 5, block_size, 272, 64),
+                   Bloque(block_size * 18, HEIGHT - block_size * 2, block_size, 272, 64),
+                    Bloque(block_size * 19, HEIGHT - block_size * 2, block_size, 272, 64),
+                      n1_spikes1, n1_fruit1, n1_fire2]
+
+################################################################
+
+floor_2 = [Bloque(i * block_size, HEIGHT - block_size, block_size, 96, 128)
+           for i in range(0, 2000)]
+objetos_nivel2 = [*floor_2, 
+                  Bloque(block_size * 2, HEIGHT - block_size * 2, block_size, 96, 128),
+                  Bloque(block_size * 5, HEIGHT - block_size * 3, block_size, 96, 128), 
+                  Bloque(block_size * 4, HEIGHT - block_size * 4, block_size, 96, 128), 
+                  Bloque(block_size * 8, HEIGHT - block_size * 3, block_size, 96, 128),
+                  Bloque(block_size * 9, HEIGHT - block_size * 3, block_size, 96, 128),
+                  Bloque(block_size * 10, HEIGHT - block_size * 3, block_size, 96, 128)]
+
+################################################################
+
+fire3 = Fuego(150, HEIGHT - block_size - 64, 16, 32)
+saw3 = Spikes(430, 487, 16, 16)
+
+floor_3 = [Bloque(i * block_size, HEIGHT - block_size, block_size, 0, 0)
+           for i in range(0, 2000)]
+objetos_nivel3 = [*floor_3, 
+                  Bloque(block_size * 2, HEIGHT - block_size * 2, block_size, 0, 0),
+                  Bloque(block_size * 5, HEIGHT - block_size * 3, block_size, 0, 0), 
+                  Bloque(block_size * 4, HEIGHT - block_size * 4, block_size, 0, 0), 
+                  Bloque(block_size * 8, HEIGHT - block_size * 3, block_size, 0, 0),
+                  Bloque(block_size * 9, HEIGHT - block_size * 3, block_size, 0, 0),
+                  Bloque(block_size * 10, HEIGHT - block_size * 3, block_size, 0, 0),
+                  fire3, saw3]
+
+################################################################
+
+fire4 = Fuego(200, HEIGHT - block_size - 64, 16, 32)
+saw4 = Spikes(530, 487, 16, 16)
+
+floor_4 = [Bloque(i * block_size, HEIGHT - block_size, block_size, 96, 64)
+           for i in range(0, 2000)]
+objetos_nivel4 = [*floor_4, 
+                  Bloque(block_size * 2, HEIGHT - block_size * 2, block_size, 96, 64),
+                  Bloque(block_size * 5, HEIGHT - block_size * 3, block_size, 96, 64), 
+                  Bloque(block_size * 4, HEIGHT - block_size * 4, block_size, 96, 64), 
+                  Bloque(block_size * 8, HEIGHT - block_size * 3, block_size, 96, 64),
+                  Bloque(block_size * 9, HEIGHT - block_size * 3, block_size, 96, 64),
+                  Bloque(block_size * 10, HEIGHT - block_size * 3, block_size, 96, 64),
+                  fire4, saw4]
+
+##############################################################
+
+fire5 = Fuego(250, HEIGHT - block_size - 64, 16, 32)
+saw5 = Spikes(630, 487, 16, 16)
+
+floor_5 = [Bloque(i * block_size, HEIGHT - block_size, block_size, 0, 64)
+           for i in range(0, 2000)]
+objetos_nivel5 = [*floor_5, 
+                  Bloque(block_size * 2, HEIGHT - block_size * 2, block_size, 0, 64),
+                  Bloque(block_size * 5, HEIGHT - block_size * 3, block_size, 0, 64), 
+                  Bloque(block_size * 4, HEIGHT - block_size * 4, block_size, 0, 64), 
+                  Bloque(block_size * 8, HEIGHT - block_size * 3, block_size, 0, 64),
+                  Bloque(block_size * 9, HEIGHT - block_size * 3, block_size, 0, 64),
+                  Bloque(block_size * 10, HEIGHT - block_size * 3, block_size, 0, 64),
+                  fire5, saw5]
 
 if __name__ == "__main__":
     main(ventana)
