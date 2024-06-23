@@ -26,7 +26,7 @@ class Player(pygame.sprite.Sprite):
             self.sprites = load_spritesheets("sprites", 32, 32, True )
 
     def saltar(self):
-        self.y_vel = -self.gravedad * 8
+        self.y_vel = -self.gravedad * 7
         self.ani_count = 0
         self.jump_count +=1
         if self.jump_count == 1:
@@ -213,6 +213,11 @@ class speed_fruit(Fruits):
     def apply_effect(self, player):
         player.x_vel *= 2
         player.speed_timer = pygame.time.get_ticks()
+
+    def reset_effect(self, player):
+        if pygame.time.get_ticks() - player.speed_timer > 5000:
+            player.x_vel /= 2
+            player.speed_timer = None
 
 class health_fruit(Fruits):
     def apply_effect(self, player):
