@@ -68,9 +68,6 @@ def mover(player, objetos):
 
 def main(ventana):
     clock = pygame.time.Clock()
-    #fondo, fondo_im = background("Gray.png")
-
-    #block_size = 96
 
     jugador = Player(100, 100, 50, 50)
     jugador.max_health = 100
@@ -83,7 +80,7 @@ def main(ventana):
     level4 = Level(jugador, "Brown.png")
     level5 = Level(jugador, "Purple.png")
 
-    current_level = level5
+    current_level = level1
 
     level1.load_game_data(objetos_nivel1)
     level2.load_game_data(objetos_nivel2)
@@ -98,12 +95,6 @@ def main(ventana):
     while run:
         clock.tick(60)
         print(jugador.rect.x, jugador.rect.y)
-        #Fruits.loop(current_level.frutas)
-        n1_fruit1.loop()
-        n5_fruit1.loop()
-        #fire_1.on()
-        #fire_2.on()
-        #fire_3.on()
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -144,9 +135,24 @@ def main(ventana):
                 offset_x = 0
 
             jugador.loop(60)
-            #fire_1.loop()
-            #fire_2.loop()
-            #fire_3.loop()
+            n1_fire1.loop()
+            n1_fire2.loop()
+            n1_fire3.loop()
+            n1_fruit1.loop()
+            n2_fire1.loop()
+            n2_fire2.loop()
+            n2_fire3.loop()
+            n2_fire4.loop()
+            n2_fire5.loop()
+            n3_fire1.loop()
+            n3_fire2.loop()
+            n4_fire1.loop()
+            n4_fire2.loop()
+            n4_fire3.loop()
+            n5_fire1.loop()
+            n5_fire2.loop()
+            n5_fire3.loop()
+            n5_fruit1.loop()
             mover(jugador, current_level.objetos)  
             current_level.upd() 
             current_level.draw(ventana, offset_x)  
@@ -200,8 +206,8 @@ floor_2 = [Bloque(i * block_size, HEIGHT - block_size, block_size, 96, 128)
 n2_fire1 = Fuego(130, 440, 16, 32)
 n2_fire2 = Fuego(500, 250, 16, 32)
 n2_fire3 = Fuego(640, 440, 16, 32)
-n2_fire7 = Fuego(1715, 440, 16, 32)
-n2_fire10 = Fuego(1950, 440, 16, 32)
+n2_fire4 = Fuego(1715, 440, 16, 32)
+n2_fire5 = Fuego(1950, 440, 16, 32)
 
 
 objetos_nivel2 = [*floor_2, 
@@ -219,7 +225,7 @@ objetos_nivel2 = [*floor_2,
                   Spikes(930, 285, 28, 28), Spikes(950, 285, 28, 28), Spikes(1460, 475, 28, 28),
                   Spikes(1440, 475, 28, 28), Spikes(1480, 475, 28, 28), Spikes(1500, 475, 28, 28),
                   Spikes(1520, 475, 28, 28), Spiked_Ball(1760, 260, 40, 40),
-                  n2_fire1, n2_fire2, n2_fire3, n2_fire7, n2_fire10]
+                  n2_fire1, n2_fire2, n2_fire3, n2_fire4, n2_fire5]
 
 ################################################################
 

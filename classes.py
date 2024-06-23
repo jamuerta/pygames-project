@@ -135,10 +135,10 @@ class Fuego(Objeto):
     def __init__(self, x, y, width, height):
         super().__init__(x, y, width, height, "fire")
         self.fire = load_spritesheets("Traps\Fire", width, height)
-        self.image = self.fire["off"][0]
+        self.image = self.fire["on"][0]
         self.mask = pygame.mask.from_surface(self.image)
         self.ani_count = 0
-        self.ani_name = "off"
+        self.ani_name = "on"
 
     def on(self):
         self.ani_name = "on"
