@@ -243,6 +243,7 @@ class Level():
 
     def upd(self):
         self.objetos.update()
+        self.frutas.update()
 
     def load_game_data(self, objetos):
         for obj in objetos:
