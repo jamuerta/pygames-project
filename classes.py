@@ -220,8 +220,8 @@ class speed_fruit(Fruits):
             player.speed_timer = None
 
 class health_fruit(Fruits):
-    def apply_effect(self, player):
-        player.health = min(player.max_health, player.health + 20)
+     def apply_effect(self, player):
+        player.health = min(player.health + 10, player.max_health)
 
 
 class Level():

@@ -94,7 +94,7 @@ def main(ventana):
     run = True
     while run:
         clock.tick(60)
-        print(jugador.rect.x, jugador.rect.y)
+        #print(jugador.rect.x, jugador.rect.y)
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -177,7 +177,7 @@ n1_fire1 = Fuego(1000, 250, 16, 32)
 n1_fire2 = Fuego(100, HEIGHT - block_size - 64, 16, 32)
 n1_fire3 = Fuego(355, 152, 16, 32)
 
-n1_fruit1 = speed_fruit(770, 250, 32, 32, "Cherries")
+n1_fruit1 = health_fruit(770, 250, 32, 32, "Cherries")
 
 floor_1 = [Bloque(i * block_size, HEIGHT - block_size, block_size, 272,64)
              for i in range(0, 2000)]
@@ -221,9 +221,9 @@ objetos_nivel2 = [*floor_2,
                   Bloque(block_size * 14, HEIGHT - block_size * 5, block_size, 96, 128),
                   Bloque(block_size * 16, HEIGHT - block_size * 5, block_size, 96, 128),
                   Bloque(block_size * 18, HEIGHT - block_size * 3, block_size, 96, 128),
-                  Spikes(870, 285, 28, 28), Spikes(890, 285, 28, 28), Spikes(910, 285, 28, 28),
-                  Spikes(930, 285, 28, 28), Spikes(950, 285, 28, 28), Spikes(1460, 475, 28, 28),
-                  Spikes(1440, 475, 28, 28), Spikes(1480, 475, 28, 28), Spikes(1500, 475, 28, 28),
+                  Spikes(870, 285, 28, 28), Spikes(900, 285, 28, 28),
+                  Spikes(930, 285, 28, 28), Spikes(960, 285, 28, 28), Spikes(1460, 475, 28, 28),
+                  Spikes(1490, 475, 28, 28),
                   Spikes(1520, 475, 28, 28), Spiked_Ball(1760, 260, 40, 40),
                   n2_fire1, n2_fire2, n2_fire3, n2_fire4, n2_fire5]
 
